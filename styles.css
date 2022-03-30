@@ -1,0 +1,213 @@
+@import url(fonts/inter.css);
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    font-family: 'Inter';
+    font-size: 1em;
+    margin: 0;
+    padding: 1.5em;
+    background-color: #F9FEFF;
+    position: relative;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo {
+    margin: 1.5em 0 3em 0;
+}
+
+.main-header {
+    height: 300px;
+    background-image: url(img/main-image\ 1.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+header form {
+    display: flex;
+    align-items: center;
+    width: 60%;
+    margin-top: 9em;
+}
+
+input[type='search'] {
+    flex: 1 0 auto;
+    outline: none;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    height: 60px;
+    padding-left: 2em;
+    font-size: 24px;
+    font-family: 'Inter';
+    font-weight: 300;
+    color: #63737a;
+    box-shadow: 0 26px 30px rgba(0, 0, 0, 0.555);
+}
+
+input[type=''search]::placeholder{
+    font-size: 24px;
+    color: #97AFBA;
+    font-family: 'Inter';
+    font-weight: 300;
+}
+
+.search-form button {
+    background-color: white;
+    border: none;
+    height: 60px;
+    border-radius: 0 5px 5px 0;
+}
+
+button img {
+    display: inline-block;
+    padding: 0 1em;
+}
+
+main {
+    padding-top: 3em;
+}
+
+main ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.book {
+    width: 200px;
+    padding: 2em;
+    position: relative;
+    background-color: white;
+    box-shadow: 0 41px 60px -18px rgba(57, 93, 101, .17);
+    border-radius: 5px;
+}
+
+.book div {
+    width: 70px;
+    height: 100px;
+    background-color: #63737a;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 1.7em;
+    font-weight: 500;
+    color: #3B5864;
+    margin-bottom: 0;
+}
+
+.author {
+    font-size: 1.2em;
+    color: #4F7585;
+    margin: 5px 0 20px 0;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.1em;
+    color: #4F7585;
+    margin-bottom: 0;
+}
+
+.info label {
+    display: flex;
+    align-items: center;
+}
+
+.info input {
+    margin-right: 5px;
+    border-color: #4F7585;
+}
+
+.book img {
+    position: absolute;
+    right: 20px;
+    top: 22px;
+
+}
+
+.add-book {
+    background-color: rgb(17, 113, 168);
+    color: white;
+    font-weight: 300;
+    font-size: 6em;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 100px;
+    right: 100px;
+    box-shadow: 0 25px 60px rgba(17, 113, 168, .5);
+}
+
+.form-div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.26);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-div form {
+    background-color: #F9FEFF;
+    width: 30%;
+    box-shadow: 0 20px 50px rgba(57, 93, 101, .5);
+    padding: 2em;
+}
+
+.form-div form,
+.form-div input[type='text'],
+.form-div input[type='number'] {
+    border-radius: 5px;
+}
+
+.form-div input[type='text'],
+.form-div input[type='number'] {
+    width: 100%;
+    padding: 1em;
+    margin-bottom: 1.5em;
+    border: 1px #a7c0ca solid;
+}
+
+.form-div h2 {
+    color: #3B5864;
+    text-align: center;
+    font-size: 2em;
+}
+
+label[for='title'],
+label[for='author'],
+label[for='pages'] {
+    display: inline-block;
+    font-size: 1.6em;
+    color: #41606d;
+    margin-bottom: .5em;
+}
