@@ -10,11 +10,11 @@
 
 <body>
     <header>
-        <img src="img/Logo.png" />
-        <p>ebook library by Olajide Ajibola</p>
+        <!-- <img src="img/Logo.png" class='logo'/> -->
+        <!-- <p>ebook library by Olajide Ajibola</p> -->
         <div class="main-header">
-            <form>
-                <input type="search" id="search"> 
+            <form class="search-form">
+                <input type="search" id="search" placeholder="Search by book title, or author"> 
                 <button><img src='img/search-icon.svg'></button>
             </form>
         </div>
@@ -25,15 +25,33 @@
                 <div class="cover"></div>
                 <p class="title">Moral Compass</p>
                 <p class="author">by Morgan Steele</p>
-                <p>
+                <p class="info">
                     <span class="pages">256 pages</span>
-                    <input type="checkbox">
-                    <label>Mark as read</label>
+                    <label><input type="checkbox">Mark as read</label>
                 </p>
                 <img src="img/bin-icon.svg">
             </li>
         </ul>
     </main>
+    <div class="add-book">+</div>
+    <div class="form-div">
+        <form>
+            <h2>Add book to library</h2>
+            <label for="author">Author</label>
+            <input type="text" id="author" name="author" placeholder="Add book author">
+
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" placeholder="Add book title">
+
+            <label for="pages">Pages</label>
+            <input type="number" id="pages" name="pages" placeholder="Add number of pages">
+
+            <input type="radio" id="read-status" name="read-status" value="read"><label for="">Read</label> <br />
+            <input type="radio" id="read-status" name="read-status" value="not-read"><label for="">Not read</label> <br />
+
+            <button type="button">Add book</button>
+        </form>
+    </div>
 
     <script src="scripts.js"></script>
 </body>
