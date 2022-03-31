@@ -41,10 +41,6 @@
 //     })
 // }
 
-const searchInput = document.querySelector('input[type=search]');
-const bookShelf = document.querySelector('.book-shelf');
-const addBookBtn = document.querySelector('.add-book');
-const bookInfoForm = document.querySelector('.book-info-form');
 
 function Book(author, title, pages, isRead) {
     this.author = author;
@@ -103,8 +99,38 @@ const library = (function(Book) {
 
 // DOM ELEMENTS
 
+const searchInput = document.querySelector('input[type=search]');
+const bookShelf = document.querySelector('.book-shelf');
+const addBookBtn = document.querySelector('.add-book');
+const bookInfoForm = document.querySelector('.form-div');
+
+library.addBookToLibrary('Robert Green', '48 Laws of Power', 342);
+library.addBookToLibrary('Danielle Steele', 'Moral Compass', 342);
+library.addBookToLibrary('Robert Green', 'Power of Seduction', 342);
+library.displayBooks(bookShelf, library.getBooks())
+
+
+
+
 function removeElementDislay(element) {
-    element.style.display = 'none'
+    const div = element.parentNode.parentNode;
+    div.style.display = 'none';
+}
+
+function addAndDisplayBooks() {
+    const author  = document.querySelector('#author');
+    const title  = document.querySelector('#title');
+    const pages  = document.querySelector('#pages');
+
+    if(author.value && title.value && pages.value) {
+        library.addBookToLibrary(author.value, title.value, parseInt(pages.value))
+        const books = library.getBooks()
+        library.displayBooks(bookShelf, books)
+    }
+
+    author.value = '';
+    title.value = '';
+    pages.value = '';
 }
 
 addBookBtn.addEventListener('click', () => {
@@ -115,11 +141,22 @@ addBookBtn.addEventListener('click', () => {
 bookInfoForm.addEventListener('click', (e) => {
     const button = e.target;
     if(button.textContent === 'Cancel') {
-        const div = button.parentNode.parentNode;
-        div.style.display = 'none';
+        removeElementDislay(button)
     }
 
-    if(button.textContent === 'Add Book') {
-        
+    if(button.textContent === 'Add book') {
+        addAndDisplayBooks()
+        removeElementDislay(button)  
+    }
+
+    if(button.classList.contains('form-div')) {
+        button.style.display = 'none';
     }
 })
+
+searchInput.addEventListener('input', (e) => {
+    const input = e.target;
+    const filtered = library.matchBook(input.value, library.getBooks())
+    library.displayBooks(bookShelf, filtered);
+})
+
