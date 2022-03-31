@@ -78,7 +78,7 @@ const library = (function(Book) {
                             <span class="pages">${book.pages} pages</span>
                             <label><input type="checkbox" class="read-status">Mark as read</label>
                         </p>
-                        <img src="img/bin-icon.svg">
+                        <img src="img/bin-icon.svg" class="delete-btn" />
                     </li>`;
                     counter += 1;
                     return li;
@@ -105,14 +105,6 @@ const searchInput = document.querySelector('input[type=search]');
 const bookShelf = document.querySelector('.book-shelf');
 const addBookBtn = document.querySelector('.add-book');
 const bookInfoForm = document.querySelector('.form-div');
-const deleteBtn = document.querySelector('.delete-btn')
-
-library.addBookToLibrary('Robert Green', '48 Laws of Power', 342, false);
-library.addBookToLibrary('Danielle Steele', 'Moral Compass', 342, false);
-library.addBookToLibrary('Robert Green', 'Power of Seduction', 342, false);
-library.displayBooks(bookShelf, library.getBooks())
-
-
 
 
 function removeElementDislay(element) {
@@ -165,9 +157,9 @@ searchInput.addEventListener('input', (e) => {
 
 bookShelf.addEventListener('click', (e) => {
     const checkbox = e.target;
+    const books = library.getBooks();
     if(checkbox.className === 'read-status') {
         const li = checkbox.parentNode.parentNode.parentNode;
-        const books = library.getBooks();
         
         if(checkbox.checked) {
             books[li.dataset.index].isRead = true;
@@ -178,6 +170,11 @@ bookShelf.addEventListener('click', (e) => {
             li.classList.remove('readMark');   
         }
     }
+
+    else if(checkbox.className === 'delete-btn') {
+        const li = checkbox.parentNode;
+        books.splice(li.dataset.index, 1)
+        library.displayBooks(bookShelf, books)
+    }
 })
 
-deleteBtn.addEventListener
