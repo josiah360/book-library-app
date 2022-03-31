@@ -61,7 +61,7 @@ input[type='search'] {
     box-shadow: 0 26px 30px rgba(0, 0, 0, 0.555);
 }
 
-input[type=''search]::placeholder{
+input[type='search']::placeholder{
     font-size: 24px;
     color: #97AFBA;
     font-family: 'Inter';
@@ -174,13 +174,14 @@ main ul {
     display: flex;
     justify-content: center;
     align-items: center;
+    display: none;
 }
 
 .form-div form {
     background-color: #F9FEFF;
     width: 30%;
     box-shadow: 0 20px 50px rgba(57, 93, 101, .5);
-    padding: 2em;
+    padding: 2.5em;
 }
 
 .form-div form,
@@ -195,6 +196,14 @@ main ul {
     padding: 1em;
     margin-bottom: 1.5em;
     border: 1px #a7c0ca solid;
+    color: #525f66;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-div input[type='text']:focus,
+.form-div input[type='number']:focus {
+    border: 1px solid #1c99dd;
 }
 
 .form-div h2 {
@@ -210,4 +219,32 @@ label[for='pages'] {
     font-size: 1.6em;
     color: #41606d;
     margin-bottom: .5em;
+}
+
+.form-div input[type="text"]::placeholder,
+.form-div input[type="number"]::placeholder {
+    color: #97AFBA;
+    font-size: 14px;
+}
+
+.add-btn {
+    background-color: rgb(17, 113, 168);
+    color: white;
+    border: none;
+    margin-right: .7em;
+    margin-top: 2em;
+}
+
+.cancel-btn {
+    background-color: rgb(224, 241, 250);
+    color: rgb(17, 113, 168);
+    border: 1px solid rgb(17, 113, 168);
+    
+}
+
+.add-btn,
+.cancel-btn {
+    padding: 1em 2em;
+    font-weight: 600;
+    border-radius: 5px;
 }
