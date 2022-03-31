@@ -68,18 +68,20 @@ const library = (function(Book) {
     }
 
     function displayBooks(element, array) {
+        let counter  = 0;
         const html = array.map(book => {
-            return `<li class='book'>
+            const li =`<li class='book' data-index="${counter}">
                         <div class="cover"></div>
                         <p class="title">${book.title}</p>
                         <p class="author">by ${book.author}</p>
                         <p class="info">
                             <span class="pages">${book.pages} pages</span>
-                            <label><input type="checkbox">Mark as read</label>
+                            <label><input type="checkbox" class="read-status">Mark as read</label>
                         </p>
                         <img src="img/bin-icon.svg">
                     </li>`;
-            
+                    counter += 1;
+                    return li;
         })
         element.innerHTML = html.join('');
     }
@@ -97,16 +99,17 @@ const library = (function(Book) {
 })(Book);
 
 
-// DOM ELEMENTS
+// -------- DOM STUFF ---------- //
 
 const searchInput = document.querySelector('input[type=search]');
 const bookShelf = document.querySelector('.book-shelf');
 const addBookBtn = document.querySelector('.add-book');
 const bookInfoForm = document.querySelector('.form-div');
+const deleteBtn = document.querySelector('.delete-btn')
 
-library.addBookToLibrary('Robert Green', '48 Laws of Power', 342);
-library.addBookToLibrary('Danielle Steele', 'Moral Compass', 342);
-library.addBookToLibrary('Robert Green', 'Power of Seduction', 342);
+library.addBookToLibrary('Robert Green', '48 Laws of Power', 342, false);
+library.addBookToLibrary('Danielle Steele', 'Moral Compass', 342, false);
+library.addBookToLibrary('Robert Green', 'Power of Seduction', 342, false);
 library.displayBooks(bookShelf, library.getBooks())
 
 
@@ -160,3 +163,21 @@ searchInput.addEventListener('input', (e) => {
     library.displayBooks(bookShelf, filtered);
 })
 
+bookShelf.addEventListener('click', (e) => {
+    const checkbox = e.target;
+    if(checkbox.className === 'read-status') {
+        const li = checkbox.parentNode.parentNode.parentNode;
+        const books = library.getBooks();
+        
+        if(checkbox.checked) {
+            books[li.dataset.index].isRead = true;
+            li.classList.add('readMark')
+        }
+        else {
+            books[li.dataset.index].isRead = false;
+            li.classList.remove('readMark');   
+        }
+    }
+})
+
+deleteBtn.addEventListener
