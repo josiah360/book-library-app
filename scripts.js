@@ -42,6 +42,10 @@
 // }
 
 
+
+// Book constructor: The blueprint for creating all books.
+
+
 function Book(author, title, pages, isRead) {
     this.author = author;
     this.title = title;
@@ -54,6 +58,12 @@ function Book(author, title, pages, isRead) {
     }
 }
 
+
+// The library object houses the required methods that enables
+// Adding book to library
+// getting books
+// displaying books
+// filtering books
 
 const library = (function(Book) {
     const books = []
@@ -128,6 +138,16 @@ function addAndDisplayBooks() {
     pages.value = '';
 }
 
+function clearFormField() {
+    const author  = document.querySelector('#author');
+    const title  = document.querySelector('#title');
+    const pages  = document.querySelector('#pages');
+    author.value = '';
+    title.value = '';
+    pages.value = '';
+
+}
+
 addBookBtn.addEventListener('click', () => {
     const bookInfoForm = document.querySelector('.form-div');
     bookInfoForm.style.display = 'flex';
@@ -136,7 +156,8 @@ addBookBtn.addEventListener('click', () => {
 bookInfoForm.addEventListener('click', (e) => {
     const button = e.target;
     if(button.textContent === 'Cancel') {
-        removeElementDislay(button)
+        removeElementDislay(button);
+        clearFormField()
     }
 
     if(button.textContent === 'Add book') {
@@ -146,6 +167,7 @@ bookInfoForm.addEventListener('click', (e) => {
 
     if(button.classList.contains('form-div')) {
         button.style.display = 'none';
+        clearFormField()
     }
 })
 
@@ -178,3 +200,8 @@ bookShelf.addEventListener('click', (e) => {
     }
 })
 
+
+//---------- ROAD MAP ----------- //
+// Book edit feature
+// Confirm book delete feature
+// Sign in/Sign up
