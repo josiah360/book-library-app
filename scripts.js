@@ -1,45 +1,37 @@
-// const library = []
+const people = [
+    {
+    name: 'Olajide Ajibola',
+    occupation: 'engineer',
+    salary: 30000,
+    index: 1
+    },
+    {
+    name: 'Mariam Balogun',
+    occupation: 'fashion designer',
+    salary: 20000,
+    index: 1
+    },
+    {
+    name: 'Israel',
+    occupation: 'student',
+    salary: 500,
+    index: 1
+    }
+]
 
-// function Book(author, title, pages, isRead) {
-//     this.author = author;
-//     this.title = title;
-//     this.pages = pages;
-//     this.isRead = isRead;
+let person = people.filter(person => person.occupation === 'student');
+person[0].delete = true;
+people.forEach(person => {
+    if(person.delete) {
+        people.splice(people.indexOf(person), 1)
+    }
+})
 
-//     this.info = function() {
-//         const readStatus = this.isRead ? 'has been read' : 'not yet read';
-//         return `${this.title} by ${this.author}, ${this.pages} pages, ${readStatus} `;
-//     }
-// }
+person = people.filter(person => person.occupation === 'student');
 
-// function addBookToLibrary(author, title, pages, isRead) {
-//     const newBook = new Book(author, title, pages, isRead);
-//     library.push(newBook)
-// }
+console.log(person)
+console.log(people)
 
-// function displayBooks(element, array) {
-//     const html = array.map(book => {
-//         return `<li class='book'>
-//                     <div class="cover"></div>
-//                     <p class="title">${book.title}</p>
-//                     <p class="author">by ${book.author}</p>
-//                     <p class="info">
-//                         <span class="pages">${book.pages} pages</span>
-//                         <label><input type="checkbox">Mark as read</label>
-//                     </p>
-//                     <img src="img/bin-icon.svg">
-//                 </li>`;
-        
-//     })
-//     element.innerHTML = html.join('');
-// }
-
-// function matchBook(wordTomatch, library) {
-//     return library.filter(book => {
-//         const regex = new RegExp(wordTomatch, 'gi');
-//         return book.title.match(regex) || book.author.match(regex);
-//     })
-// }
 
 
 
@@ -60,7 +52,8 @@ function Book(author, title, pages, isRead) {
 
 
 // The library object houses the required methods that enables
-// Adding book to library
+// adding book to library
+// deleting books
 // getting books
 // displaying books
 // filtering books
@@ -77,36 +70,58 @@ const library = (function(Book) {
         books.push(newBook)
     }
 
+    function removeBook(index, array) {
+        array.splice(index, 1)
+    }
+
     function displayBooks(element, array) {
         let counter  = 0;
         const html = array.map(book => {
-            const li =`<li class='book' data-index="${counter}">
-                        <div class="cover"></div>
-                        <p class="title">${book.title}</p>
-                        <p class="author">by ${book.author}</p>
-                        <p class="info">
+            let li =``;
+            if(book.isRead) {
+                li +=  `<li class="book readMark" data-index="${counter}">
+                            <div class="cover"></div>
+                            <p class="title">${book.title}</p>
+                            <p class="author">by ${book.author}</p>
+                            <p class="info">
+                            <span class="pages">${book.pages} pages</span>
+                            <label><input type="checkbox" class="read-status" checked>Mark as read</label>
+                            </p>
+                            <img src="img/bin-icon.svg" class="delete-btn" />
+                        </li>`;
+            }
+            else{
+                li +=  `<li class="book" data-index="${counter}">
+                            <div class="cover"></div>
+                            <p class="title">${book.title}</p>
+                            <p class="author">by ${book.author}</p>
+                            <p class="info">
                             <span class="pages">${book.pages} pages</span>
                             <label><input type="checkbox" class="read-status">Mark as read</label>
-                        </p>
-                        <img src="img/bin-icon.svg" class="delete-btn" />
-                    </li>`;
-                    counter += 1;
-                    return li;
+                            </p>
+                            <img src="img/bin-icon.svg" class="delete-btn" />
+                        </li>`;
+            }
+            
+                counter += 1;
+                return li;
         })
         element.innerHTML = html.join('');
     }
 
-    function matchBook(wordTomatch, library) {
-        return library.filter(book => {
-            const regex = new RegExp(wordTomatch, 'gi');
+    function matchBook(wordToMatch) {
+        return books.filter(book => {
+            const regex = new RegExp(wordToMatch, 'gi');
             return book.title.match(regex) || book.author.match(regex);
         })
     }
 
     return {
-        addBookToLibrary, displayBooks, matchBook, getBooks
+        addBookToLibrary, displayBooks, matchBook, getBooks, removeBook
     }
 })(Book);
+
+
 
 
 // -------- DOM STUFF ---------- //
@@ -116,6 +131,10 @@ const bookShelf = document.querySelector('.book-shelf');
 const addBookBtn = document.querySelector('.add-book');
 const bookInfoForm = document.querySelector('.form-div');
 
+library.addBookToLibrary('Robert Green', '48 Laws of Power', 45, false)
+library.addBookToLibrary('Robert Green', 'Power of Seduction', 45, false)
+library.addBookToLibrary('Danielle Robert', 'Moral Compass', 45, false)
+library.displayBooks(bookShelf, library.getBooks())
 
 function removeElementDislay(element) {
     const div = element.parentNode.parentNode;
@@ -173,7 +192,7 @@ bookInfoForm.addEventListener('click', (e) => {
 
 searchInput.addEventListener('input', (e) => {
     const input = e.target;
-    const filtered = library.matchBook(input.value, library.getBooks())
+    let filtered = library.matchBook(input.value);
     library.displayBooks(bookShelf, filtered);
 })
 
@@ -185,18 +204,45 @@ bookShelf.addEventListener('click', (e) => {
         
         if(checkbox.checked) {
             books[li.dataset.index].isRead = true;
-            li.classList.add('readMark')
+            if(searchInput.value === '') {
+                library.displayBooks(bookShelf, library.getBooks());
+            }
+            else {
+                const filtered = library.matchBook(searchInput.value);
+                library.displayBooks(bookShelf, filtered);
+            }
         }
         else {
             books[li.dataset.index].isRead = false;
-            li.classList.remove('readMark');   
+            if(searchInput.value !== '') {
+                library.displayBooks(bookShelf, library.getBooks());
+            }
+            else {
+                const filtered = library.matchBook(searchInput.value);
+                library.displayBooks(bookShelf, filtered);
+            }  
         }
     }
 
     else if(checkbox.className === 'delete-btn') {
         const li = checkbox.parentNode;
-        books.splice(li.dataset.index, 1)
-        library.displayBooks(bookShelf, books)
+        if(searchInput.value !== '') {
+            let filtered = library.matchBook(searchInput.value);
+
+            filtered[li.dataset.index].delete = true;
+            books.forEach(book => {
+                if(book.delete) {
+                    books.splice(books.indexOf(book), 1);
+                }
+            })
+
+            filtered = library.matchBook(searchInput.value)
+            library.displayBooks(bookShelf, filtered);
+        }
+        else {
+            library.removeBook(li.dataset.index, books);
+            library.displayBooks(bookShelf, books);
+        }
     }
 })
 
