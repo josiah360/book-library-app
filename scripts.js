@@ -1,39 +1,3 @@
-const people = [
-    {
-    name: 'Olajide Ajibola',
-    occupation: 'engineer',
-    salary: 30000,
-    index: 1
-    },
-    {
-    name: 'Mariam Balogun',
-    occupation: 'fashion designer',
-    salary: 20000,
-    index: 1
-    },
-    {
-    name: 'Israel',
-    occupation: 'student',
-    salary: 500,
-    index: 1
-    }
-]
-
-let person = people.filter(person => person.occupation === 'student');
-person[0].delete = true;
-people.forEach(person => {
-    if(person.delete) {
-        people.splice(people.indexOf(person), 1)
-    }
-})
-
-person = people.filter(person => person.occupation === 'student');
-
-console.log(person)
-console.log(people)
-
-
-
 
 // Book constructor: The blueprint for creating all books.
 
@@ -79,7 +43,7 @@ const library = (function(Book) {
         const html = array.map(book => {
             let li =``;
             if(book.isRead) {
-                li +=  `<li class="book readMark" data-index="${counter}">
+                li +=  `<li class="book readMark" data-index="${counter}" data-author="${book.author}" data-title="${book.title}">
                             <div class="cover"></div>
                             <p class="title">${book.title}</p>
                             <p class="author">by ${book.author}</p>
@@ -91,7 +55,7 @@ const library = (function(Book) {
                         </li>`;
             }
             else{
-                li +=  `<li class="book" data-index="${counter}">
+                li +=  `<li class="book" data-index="${counter}" data-author="${book.author}" data-title="${book.title}">
                             <div class="cover"></div>
                             <p class="title">${book.title}</p>
                             <p class="author">by ${book.author}</p>
@@ -190,11 +154,24 @@ bookInfoForm.addEventListener('click', (e) => {
     }
 })
 
-searchInput.addEventListener('input', (e) => {
+function filterBooks(e) {
     const input = e.target;
-    let filtered = library.matchBook(input.value);
-    library.displayBooks(bookShelf, filtered);
-})
+    const books = bookShelf.children;
+
+    for(let i = 0; i < books.length; i += 1) {
+        const title = books[i].dataset.title;
+        const author = books[i].dataset.author;
+        const regex = new RegExp(input.value, 'gi')
+        if(title.match(regex) || author.match(regex) || input.value === '') {
+            books[i].style.display = 'block';
+        }
+        else{
+            books[i].style.display = 'none';
+        }
+    }
+}
+
+searchInput.addEventListener('input', filterBooks)
 
 bookShelf.addEventListener('click', (e) => {
     const checkbox = e.target;
