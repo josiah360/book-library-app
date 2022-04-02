@@ -101,6 +101,11 @@ main ul {
     border-radius: 5px;
 }
 
+.book:hover .delete-btn,
+.book:hover .edit-btn {
+    opacity: 1;
+}
+
 .book div {
     width: 70px;
     height: 100px;
@@ -147,13 +152,27 @@ main ul {
     cursor: pointer;
 }
 
+.edit-btn {
+    width: 32px;
+    position: absolute;
+    right: 20px;
+    top: 60px;
+    cursor: pointer;
+}
+
+.delete-btn,
+.edit-btn {
+    opacity: 0;
+    transition: opacity .2s ease-in;
+}
+
 .add-book {
     background-color: rgb(17, 113, 168);
     color: white;
-    font-weight: 300;
-    font-size: 6em;
-    width: 100px;
-    height: 100px;
+    font-weight: 200;
+    font-size: 5em;
+    width: 85px;
+    height: 85px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -162,6 +181,13 @@ main ul {
     bottom: 100px;
     right: 100px;
     box-shadow: 0 25px 60px rgba(17, 113, 168, .5);
+    cursor: pointer;
+    transition: transform .3s ease-out, background .3s ease-out;
+}
+
+.add-book:hover {
+    transform: scale(1.03);
+    background-color: rgb(57, 146, 197);
 }
 
 .form-div {
@@ -233,13 +259,22 @@ label[for='pages'] {
     border: none;
     margin-right: .7em;
     margin-top: 2em;
+    transition: background .3s ease-out;
+}
+
+.add-btn:hover {
+    background-color: rgb(68, 152, 201);
 }
 
 .cancel-btn {
     background-color: rgb(224, 241, 250);
     color: rgb(17, 113, 168);
     border: 1px solid rgb(17, 113, 168);
-    
+    transition: background .3s ease-out;
+}
+
+.cancel-btn:hover {
+    background-color: rgb(169, 225, 255);
 }
 
 .add-btn,
@@ -247,6 +282,7 @@ label[for='pages'] {
     padding: 1em 2em;
     font-weight: 600;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .readMark {
