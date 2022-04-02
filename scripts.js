@@ -105,8 +105,6 @@ const bookShelf = document.querySelector('.book-shelf');
 const addBookBtn = document.querySelector('.add-book');
 const bookInfoForm = document.querySelector('.form-div');
 
-const elementId = '';
-
 function removeElementDislay(element) {
     const div = element.parentNode.parentNode;
     div.style.display = 'none';
@@ -186,11 +184,20 @@ function deleteBook(books, deleteButton) {
 
 }
 
+function openForm(buttonContent, headerContent) {
+    const bookInfoForm = document.querySelector('.form-div');
+    const saveBtn = document.querySelector('.add-btn')
+    const formHeader = document.querySelector('.book-info-form h2')
+
+    bookInfoForm.style.display = 'flex';
+    saveBtn.textContent = buttonContent;
+    formHeader.textContent = headerContent;
+}
+
 // -------- EVENT LISTENERS --------- //
 
 addBookBtn.addEventListener('click', () => {
-    const bookInfoForm = document.querySelector('.form-div');
-    bookInfoForm.style.display = 'flex';
+    openForm('Add book', 'Add book to library');
 })
 
 bookInfoForm.addEventListener('click', (e) => {
@@ -203,6 +210,10 @@ bookInfoForm.addEventListener('click', (e) => {
     if(button.textContent === 'Add book') {
         addAndDisplayBooks()
         removeElementDislay(button)  
+    }
+
+    if(button.textContent === 'Save') {
+        
     }
 
     if(button.classList.contains('form-div')) {
@@ -228,6 +239,12 @@ bookShelf.addEventListener('click', (e) => {
 
     if(button.className === 'delete-btn') {
         deleteBook(books, button)
+    }
+
+    if(button.className === 'edit-btn') {
+        const li = button.parentNode
+        bookShelf.dataset.elementId = li.dataset.id;
+        openForm('Save', 'Edit book info')        
     }
 })
 
