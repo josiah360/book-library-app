@@ -140,11 +140,11 @@ main ul {
     border-color: #4F7585;
 }
 
-.book img {
+.delete-btn {
     position: absolute;
     right: 20px;
     top: 22px;
-
+    cursor: pointer;
 }
 
 .add-book {
@@ -268,5 +268,5 @@ label[for='pages'] {
 }
 
 .readMark {
-    border: 1px solid rgb(17, 113, 168);;
+    border: 1px solid rgb(17, 113, 168);
 }
