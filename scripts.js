@@ -2,21 +2,24 @@
 // Book constructor: The blueprint for creating all books.
 
 
-function Book(author, title, pages, isRead) {
+function Book(author, title, pages, id, isRead) {
     this.author = author;
     this.title = title;
     this.pages = pages;
     this.isRead = isRead;
+    this.id = id;
 
     this.info = function() {
         const readStatus = this.isRead ? 'has been read' : 'not yet read';
         return `${this.title} by ${this.author}, ${this.pages} pages, ${readStatus} `;
     }
+
 }
 
 
 // The library object houses the required methods that enables
 // adding book to library
+// setting book id
 // deleting books
 // getting books
 // displaying books
@@ -24,13 +27,18 @@ function Book(author, title, pages, isRead) {
 
 const library = (function(Book) {
     const books = []
+    let bookId = 0;
+
+    function getBookId() {
+        return bookId += 1;
+    }
 
     function getBooks() {
         return books;
     }
 
-    function addBookToLibrary(author, title, pages, isRead) {
-        const newBook = new Book(author, title, pages, isRead);
+    function addBookToLibrary(author, title, pages, id, isRead) {
+        const newBook = new Book(author, title, pages, id, isRead);
         books.push(newBook)
     }
 
@@ -43,27 +51,29 @@ const library = (function(Book) {
         const html = array.map(book => {
             let li =``;
             if(book.isRead) {
-                li +=  `<li class="book readMark" data-index="${counter}" data-author="${book.author}" data-title="${book.title}">
+                li +=  `<li class="book readMark" data-index="${counter}" data-author="${book.author}" data-title="${book.title}" data-id="${book.id}">
                             <div class="cover"></div>
                             <p class="title">${book.title}</p>
                             <p class="author">by ${book.author}</p>
                             <p class="info">
                             <span class="pages">${book.pages} pages</span>
-                            <label><input type="checkbox" class="read-status" checked>Mark as read</label>
+                            <label><input type="checkbox" class="read-status-btn" checked>Mark as read</label>
                             </p>
                             <img src="img/bin-icon.svg" class="delete-btn" />
+                            <img src="img/edit-btn.svg" class="edit-btn">
                         </li>`;
             }
             else{
-                li +=  `<li class="book" data-index="${counter}" data-author="${book.author}" data-title="${book.title}">
+                li +=  `<li class="book" data-index="${counter}" data-author="${book.author}" data-title="${book.title}" data-id="${book.id}">
                             <div class="cover"></div>
                             <p class="title">${book.title}</p>
                             <p class="author">by ${book.author}</p>
                             <p class="info">
                             <span class="pages">${book.pages} pages</span>
-                            <label><input type="checkbox" class="read-status">Mark as read</label>
+                            <label><input type="checkbox" class="read-status-btn">Mark as read</label>
                             </p>
                             <img src="img/bin-icon.svg" class="delete-btn" />
+                            <img src="img/edit-btn.svg" class="edit-btn">
                         </li>`;
             }
             
@@ -81,7 +91,7 @@ const library = (function(Book) {
     }
 
     return {
-        addBookToLibrary, displayBooks, matchBook, getBooks, removeBook
+        addBookToLibrary, displayBooks, matchBook, getBooks, getBookId, removeBook
     }
 })(Book);
 
@@ -95,10 +105,7 @@ const bookShelf = document.querySelector('.book-shelf');
 const addBookBtn = document.querySelector('.add-book');
 const bookInfoForm = document.querySelector('.form-div');
 
-library.addBookToLibrary('Robert Green', '48 Laws of Power', 45, false)
-library.addBookToLibrary('Robert Green', 'Power of Seduction', 45, false)
-library.addBookToLibrary('Danielle Robert', 'Moral Compass', 45, false)
-library.displayBooks(bookShelf, library.getBooks())
+const elementId = '';
 
 function removeElementDislay(element) {
     const div = element.parentNode.parentNode;
@@ -109,9 +116,10 @@ function addAndDisplayBooks() {
     const author  = document.querySelector('#author');
     const title  = document.querySelector('#title');
     const pages  = document.querySelector('#pages');
-
+    const bookId = library.getBookId()
+    
     if(author.value && title.value && pages.value) {
-        library.addBookToLibrary(author.value, title.value, parseInt(pages.value))
+        library.addBookToLibrary(author.value, title.value, parseInt(pages.value), bookId, false)
         const books = library.getBooks()
         library.displayBooks(bookShelf, books)
     }
@@ -128,8 +136,57 @@ function clearFormField() {
     author.value = '';
     title.value = '';
     pages.value = '';
+}
+
+function filterBooks(e) {
+    const input = e.target;
+    const books = bookShelf.children;
+
+    for(let i = 0; i < books.length; i += 1) {
+        const title = books[i].dataset.title;
+        const author = books[i].dataset.author;
+        const regex = new RegExp(input.value, 'gi')
+        if(title.match(regex) || author.match(regex) || input.value === '') {
+            books[i].style.display = 'block';
+        }
+        else{
+            books[i].style.display = 'none';
+        }
+    }
+}
+
+function updateReadStatus(books, updateButton, readStatus) {
+    const li = updateButton.parentNode.parentNode.parentNode;
+    const bookId = li.dataset.id;
+
+    books.forEach(book => {
+        if(book.id == bookId) {
+            book.isRead = readStatus;
+
+            if(book.isRead) {
+                li.classList.add('readMark');
+            }
+            else {
+                li.classList.remove('readMark');
+            }
+        }
+    })
+}
+
+function deleteBook(books, deleteButton) {
+    const li = deleteButton.parentNode;
+    const bookId = li.dataset.id
+
+    books.forEach(book => {
+        if(book.id == bookId) {
+            books.splice(books.indexOf(book), 1)
+            li.remove()
+        }
+    })
 
 }
+
+// -------- EVENT LISTENERS --------- //
 
 addBookBtn.addEventListener('click', () => {
     const bookInfoForm = document.querySelector('.form-div');
@@ -154,72 +211,23 @@ bookInfoForm.addEventListener('click', (e) => {
     }
 })
 
-function filterBooks(e) {
-    const input = e.target;
-    const books = bookShelf.children;
-
-    for(let i = 0; i < books.length; i += 1) {
-        const title = books[i].dataset.title;
-        const author = books[i].dataset.author;
-        const regex = new RegExp(input.value, 'gi')
-        if(title.match(regex) || author.match(regex) || input.value === '') {
-            books[i].style.display = 'block';
-        }
-        else{
-            books[i].style.display = 'none';
-        }
-    }
-}
-
 searchInput.addEventListener('input', filterBooks)
 
 bookShelf.addEventListener('click', (e) => {
-    const checkbox = e.target;
+    const button = e.target;
     const books = library.getBooks();
-    if(checkbox.className === 'read-status') {
-        const li = checkbox.parentNode.parentNode.parentNode;
-        
-        if(checkbox.checked) {
-            books[li.dataset.index].isRead = true;
-            if(searchInput.value === '') {
-                library.displayBooks(bookShelf, library.getBooks());
-            }
-            else {
-                const filtered = library.matchBook(searchInput.value);
-                library.displayBooks(bookShelf, filtered);
-            }
+
+    if(button.className === 'read-status-btn') {
+        if(button.checked) {
+            updateReadStatus(books, button, true)
         }
         else {
-            books[li.dataset.index].isRead = false;
-            if(searchInput.value !== '') {
-                library.displayBooks(bookShelf, library.getBooks());
-            }
-            else {
-                const filtered = library.matchBook(searchInput.value);
-                library.displayBooks(bookShelf, filtered);
-            }  
+            updateReadStatus(books, button, false)
         }
     }
 
-    else if(checkbox.className === 'delete-btn') {
-        const li = checkbox.parentNode;
-        if(searchInput.value !== '') {
-            let filtered = library.matchBook(searchInput.value);
-
-            filtered[li.dataset.index].delete = true;
-            books.forEach(book => {
-                if(book.delete) {
-                    books.splice(books.indexOf(book), 1);
-                }
-            })
-
-            filtered = library.matchBook(searchInput.value)
-            library.displayBooks(bookShelf, filtered);
-        }
-        else {
-            library.removeBook(li.dataset.index, books);
-            library.displayBooks(bookShelf, books);
-        }
+    if(button.className === 'delete-btn') {
+        deleteBook(books, button)
     }
 })
 
