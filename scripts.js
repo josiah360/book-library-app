@@ -105,6 +105,11 @@ const bookShelf = document.querySelector('.book-shelf');
 const addBookBtn = document.querySelector('.add-book');
 const bookInfoForm = document.querySelector('.form-div');
 
+library.addBookToLibrary('Robert Green', '48 Laws of Power', 654, library.getBookId(), false);
+library.addBookToLibrary('Robert Green', 'Power of Seduction', 654, library.getBookId(), true);
+library.addBookToLibrary('Danielle Steele', 'Moral Compass', 654, library.getBookId(), false);
+library.displayBooks(bookShelf, library.getBooks());
+
 function removeElementDislay(element) {
     const div = element.parentNode.parentNode;
     div.style.display = 'none';
@@ -114,10 +119,13 @@ function addAndDisplayBooks() {
     const author  = document.querySelector('#author');
     const title  = document.querySelector('#title');
     const pages  = document.querySelector('#pages');
+    const isRead = document.querySelector('#read-status');
     const bookId = library.getBookId()
+
+    const readStatus = isRead.checked ? true : false;
     
     if(author.value && title.value && pages.value) {
-        library.addBookToLibrary(author.value, title.value, parseInt(pages.value), bookId, false)
+        library.addBookToLibrary(author.value, title.value, parseInt(pages.value), bookId, readStatus)
         const books = library.getBooks()
         library.displayBooks(bookShelf, books)
     }
@@ -125,15 +133,18 @@ function addAndDisplayBooks() {
     author.value = '';
     title.value = '';
     pages.value = '';
+    isRead.checked = false;
 }
 
 function clearFormField() {
     const author  = document.querySelector('#author');
     const title  = document.querySelector('#title');
     const pages  = document.querySelector('#pages');
+    const isRead = document.querySelector('#read-status');
     author.value = '';
     title.value = '';
     pages.value = '';
+    isRead.checked = false;
 }
 
 function filterBooks(e) {
@@ -213,7 +224,51 @@ bookInfoForm.addEventListener('click', (e) => {
     }
 
     if(button.textContent === 'Save') {
-        
+        const author  = document.querySelector('#author');
+        const title  = document.querySelector('#title');
+        const pages  = document.querySelector('#pages');
+        const isRead = document.querySelector('#read-status');
+        const li = document.querySelectorAll('.book-shelf li');
+
+        const books = library.getBooks();
+        const book = books.find(book => book.id == bookShelf.dataset.elementId);
+        book.author = author.value;
+        book.title = title.value;
+        book.pages = pages.value;
+        book.isRead = (isRead.checked) ? true : false;
+
+        li.forEach(li => {
+            if(li.dataset.id == bookShelf.dataset.elementId) {
+
+                const div = li.firstElementChild;
+                const titleP = div.nextElementSibling;
+                titleP.textContent = title.value || 'Unknown';
+                li.dataset.title =titleP.textContent;
+
+                const authorP = titleP.nextElementSibling;
+                authorP.textContent = `by ${author.value || 'Unknown'}`;
+                li.dataset.author = authorP.textContent;
+
+                const infoP = authorP.nextElementSibling;
+
+                const pagesSpan = infoP.firstElementChild;
+                pagesSpan.textContent = `${pages.value} pages`;
+
+                const readCheckbox = pagesSpan.nextElementSibling.firstElementChild;
+
+                if(isRead.checked) {
+                    readCheckbox.checked = true;
+                    li.classList.add('readMark');
+                }
+                else {
+                    readCheckbox.checked = false;
+                    li.classList.remove('readMark');
+                }
+            }
+        })
+        e.target.parentNode.parentNode.style.display = 'none';
+        clearFormField()
+        console.log(books)
     }
 
     if(button.classList.contains('form-div')) {
@@ -242,9 +297,36 @@ bookShelf.addEventListener('click', (e) => {
     }
 
     if(button.className === 'edit-btn') {
-        const li = button.parentNode
+        const author  = document.querySelector('#author');
+        const title  = document.querySelector('#title');
+        const pages  = document.querySelector('#pages');
+        const isRead = document.querySelector('#read-status');
+
+        openForm('Save', 'Edit book info') 
+
+        const li = button.parentNode;
         bookShelf.dataset.elementId = li.dataset.id;
-        openForm('Save', 'Edit book info')        
+
+        const div = li.firstElementChild;
+        const titleP = div.nextElementSibling;
+        title.value = titleP.textContent;
+
+        const authorP = titleP.nextElementSibling;
+        author.value = authorP.textContent.slice(3);
+
+        const infoP = authorP.nextElementSibling;
+
+        const pagesSpan = infoP.firstElementChild;
+        pages.value = pagesSpan.textContent.replace(' pages', '');
+
+        const readCheckbox = pagesSpan.nextElementSibling.firstElementChild;
+
+        if(readCheckbox.checked) {
+            isRead.checked = true;
+        }
+        else {
+            isRead.checked = false;
+        }   
     }
 })
 
