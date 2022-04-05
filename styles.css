@@ -306,11 +306,8 @@ label[for='pages'] {
     }
 
     .add-book {
-        /* width: 60px;
-        height: 60px; */
         right: 30px;
         bottom: 30px;
-        /* font-size: 3em; */
     }
 }
 
@@ -351,7 +348,6 @@ label[for='pages'] {
     }
 
     header form {
-        
         padding-top: 2.5em;
     }
 
@@ -398,7 +394,14 @@ label[for='pages'] {
     
     .search-form button {
         height: 45px;
-        border-radius: 0 5px 5px 0;
+    }
+
+    .book {
+        padding: 1.2em;
+    }
+
+    .title {
+        font-size: 1.5em;
     }
     
     button img {
@@ -408,6 +411,6 @@ label[for='pages'] {
 
     .book-shelf {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        grid-gap: 10px;
+        grid-gap: 7px;
     }
 }
