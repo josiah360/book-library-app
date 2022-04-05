@@ -108,6 +108,9 @@ const bookInfoForm = document.querySelector('.form-div');
 library.addBookToLibrary('Robert Green', '48 Laws of Power', 654, library.getBookId(), false);
 library.addBookToLibrary('Robert Green', 'Power of Seduction', 654, library.getBookId(), true);
 library.addBookToLibrary('Danielle Steele', 'Moral Compass', 654, library.getBookId(), false);
+library.addBookToLibrary('Robert Green', '48 Laws of Power', 654, library.getBookId(), false);
+library.addBookToLibrary('Robert Green', 'Power of Seduction', 654, library.getBookId(), true);
+library.addBookToLibrary('Danielle Steele', 'Moral Compass', 654, library.getBookId(), false);
 library.displayBooks(bookShelf, library.getBooks());
 
 function removeElementDislay(element) {
